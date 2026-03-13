@@ -1,0 +1,478 @@
+@import url("https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@400;500;600;700&family=Orbitron:wght@500;700;800&display=swap");
+
+.intro-cutscene-root {
+  position: relative;
+  width: 100%;
+  color: #e2f7ff;
+  font-family: "Chakra Petch", "Rajdhani", "Segoe UI", sans-serif;
+}
+
+.intro-scene-frame {
+  position: relative;
+  min-height: calc(100vh - 136px);
+  border-radius: 24px;
+  border: 1px solid rgba(77, 146, 176, 0.33);
+  overflow: hidden;
+  background: linear-gradient(165deg, #050c18 0%, #061123 45%, #030812 100%);
+  box-shadow: 0 28px 58px rgba(0, 0, 0, 0.48), inset 0 1px 0 rgba(139, 218, 255, 0.12);
+}
+
+.intro-camera {
+  position: absolute;
+  inset: 0;
+  transform-origin: 50% 56%;
+}
+
+.intro-fade-overlay {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at 50% 45%, rgba(0, 0, 0, 0.56) 0%, rgba(0, 0, 0, 0.95) 72%);
+  pointer-events: none;
+}
+
+.intro-forest-scene {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(circle at 78% 16%, rgba(115, 205, 171, 0.2) 0%, rgba(115, 205, 171, 0) 52%),
+    radial-gradient(circle at 20% 14%, rgba(53, 139, 219, 0.22) 0%, rgba(53, 139, 219, 0) 44%),
+    linear-gradient(180deg, #04131f 0%, #04151d 40%, #071311 100%);
+}
+
+.intro-parallax-layer {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.intro-forest-back {
+  opacity: 0.9;
+  background-image:
+    radial-gradient(circle at 18% 22%, rgba(131, 237, 255, 0.1) 0%, rgba(131, 237, 255, 0) 32%),
+    radial-gradient(circle at 62% 28%, rgba(96, 247, 184, 0.14) 0%, rgba(96, 247, 184, 0) 37%),
+    repeating-linear-gradient(
+      90deg,
+      rgba(129, 218, 199, 0.08) 0,
+      rgba(129, 218, 199, 0.08) 1px,
+      transparent 1px,
+      transparent 92px
+    );
+}
+
+.intro-forest-mid {
+  top: 22%;
+  opacity: 0.7;
+  background-image:
+    linear-gradient(
+      to top,
+      rgba(11, 53, 53, 0.65) 0%,
+      rgba(11, 53, 53, 0.65) 6%,
+      transparent 6%,
+      transparent 100%
+    ),
+    repeating-linear-gradient(
+      105deg,
+      rgba(69, 158, 130, 0.24) 0,
+      rgba(69, 158, 130, 0.24) 3px,
+      transparent 3px,
+      transparent 88px
+    );
+}
+
+.intro-forest-front {
+  opacity: 1;
+  background:
+    linear-gradient(to top, rgba(5, 17, 15, 0.96) 0%, rgba(7, 20, 20, 0.92) 24%, rgba(7, 20, 20, 0) 56%),
+    repeating-linear-gradient(
+      120deg,
+      rgba(79, 196, 147, 0.18) 0,
+      rgba(79, 196, 147, 0.18) 2px,
+      transparent 2px,
+      transparent 104px
+    );
+  mix-blend-mode: screen;
+}
+
+.intro-character-track {
+  position: absolute;
+  left: 6%;
+  right: 6%;
+  bottom: 112px;
+  height: 190px;
+}
+
+.intro-character-walker {
+  position: absolute;
+  bottom: 22px;
+  width: 96px;
+  height: 132px;
+}
+
+.intro-character-sprite {
+  position: relative;
+  width: 90px;
+  height: 120px;
+  border-radius: 22px 22px 26px 26px;
+  border: 1px solid rgba(132, 227, 255, 0.48);
+  background:
+    linear-gradient(180deg, rgba(80, 185, 228, 0.95) 0%, rgba(49, 84, 203, 0.92) 62%, rgba(24, 39, 92, 0.95) 100%);
+  box-shadow: 0 14px 26px rgba(0, 0, 0, 0.44), inset 0 1px 0 rgba(210, 250, 255, 0.24);
+}
+
+.intro-character-sprite::after {
+  content: "";
+  position: absolute;
+  left: 14px;
+  right: 14px;
+  bottom: 12px;
+  height: 20px;
+  border-radius: 999px;
+  background: rgba(6, 24, 52, 0.42);
+  filter: blur(3px);
+}
+
+.intro-character-visor {
+  position: absolute;
+  left: 14px;
+  right: 14px;
+  top: 18px;
+  height: 22px;
+  border-radius: 10px;
+  background: linear-gradient(90deg, #4df0ff 0%, #4bb4ff 45%, #74ffd1 100%);
+  box-shadow: 0 0 14px rgba(80, 223, 255, 0.56);
+}
+
+.intro-character-legs {
+  position: absolute;
+  left: 16px;
+  right: 16px;
+  bottom: -10px;
+  height: 16px;
+  border-radius: 8px;
+  background: linear-gradient(90deg, rgba(99, 177, 255, 0.88) 0%, rgba(80, 242, 192, 0.84) 100%);
+}
+
+.intro-trap-zone {
+  position: absolute;
+  left: 50%;
+  bottom: 98px;
+  transform: translateX(-50%);
+  width: min(360px, 54vw);
+  height: 64px;
+  pointer-events: none;
+}
+
+.intro-ground-crack {
+  position: absolute;
+  left: 50%;
+  top: -8px;
+  width: 74%;
+  height: 8px;
+  transform: translateX(-50%);
+  transform-origin: center;
+  border-radius: 999px;
+  background: linear-gradient(90deg, #74e3ff 0%, #63f3a5 50%, #74e3ff 100%);
+  box-shadow: 0 0 16px rgba(86, 211, 255, 0.76);
+}
+
+.intro-trap-door-frame {
+  position: absolute;
+  inset: 0;
+  perspective: 600px;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.intro-trap-door {
+  position: absolute;
+  top: 10px;
+  bottom: 0;
+  width: 50%;
+  background:
+    linear-gradient(180deg, rgba(11, 38, 52, 0.92) 0%, rgba(8, 22, 36, 0.98) 100%),
+    repeating-linear-gradient(
+      90deg,
+      rgba(130, 233, 255, 0.18) 0,
+      rgba(130, 233, 255, 0.18) 2px,
+      transparent 2px,
+      transparent 14px
+    );
+  border-top: 1px solid rgba(135, 228, 255, 0.38);
+  border-bottom: 1px solid rgba(135, 228, 255, 0.22);
+  transform-style: preserve-3d;
+}
+
+.intro-trap-door-left {
+  left: 0;
+  transform-origin: left center;
+  border-right: 1px solid rgba(79, 164, 201, 0.24);
+}
+
+.intro-trap-door-right {
+  right: 0;
+  transform-origin: right center;
+  border-left: 1px solid rgba(79, 164, 201, 0.24);
+}
+
+.intro-trap-depth {
+  position: absolute;
+  inset: 12px 8px 0;
+  border-radius: 8px;
+  background: radial-gradient(circle at 50% 0, rgba(20, 120, 183, 0.2) 0%, rgba(0, 0, 0, 0.96) 72%);
+}
+
+.intro-forest-caption {
+  position: absolute;
+  left: 5.5%;
+  top: 6%;
+  max-width: 560px;
+  border-radius: 16px;
+  border: 1px solid rgba(109, 194, 221, 0.28);
+  background: rgba(4, 16, 30, 0.72);
+  padding: 18px 20px;
+  backdrop-filter: blur(8px);
+  box-shadow: inset 0 1px 0 rgba(163, 243, 255, 0.14);
+}
+
+.intro-kicker {
+  margin: 0;
+  font-size: 0.73rem;
+  letter-spacing: 0.26em;
+  text-transform: uppercase;
+  color: #67dbff;
+  font-weight: 700;
+}
+
+.intro-forest-caption h2,
+.intro-underground-header h2 {
+  margin: 9px 0 8px;
+  font-size: clamp(1.55rem, 3vw, 2.4rem);
+  line-height: 1.06;
+  font-family: "Orbitron", "Chakra Petch", sans-serif;
+  letter-spacing: 0.03em;
+  color: #e9feff;
+}
+
+.intro-forest-caption p,
+.intro-underground-header p {
+  margin: 0;
+  font-size: 1rem;
+  line-height: 1.45;
+  color: rgba(194, 236, 248, 0.88);
+}
+
+.intro-underground-scene {
+  background:
+    radial-gradient(circle at 80% 8%, rgba(70, 168, 255, 0.18) 0%, rgba(70, 168, 255, 0) 44%),
+    radial-gradient(circle at 18% 0%, rgba(106, 255, 188, 0.14) 0%, rgba(106, 255, 188, 0) 39%),
+    linear-gradient(180deg, #02040b 0%, #050812 100%);
+}
+
+.intro-underground-scene::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image:
+    repeating-linear-gradient(
+      0deg,
+      rgba(100, 208, 255, 0.07) 0,
+      rgba(100, 208, 255, 0.07) 1px,
+      transparent 1px,
+      transparent 26px
+    ),
+    repeating-linear-gradient(
+      90deg,
+      rgba(100, 208, 255, 0.07) 0,
+      rgba(100, 208, 255, 0.07) 1px,
+      transparent 1px,
+      transparent 26px
+    );
+  opacity: 0.35;
+  pointer-events: none;
+}
+
+.intro-underground-shell {
+  position: relative;
+  z-index: 2;
+  padding: clamp(22px, 3vw, 32px);
+  display: grid;
+  gap: 22px;
+}
+
+.intro-underground-header {
+  max-width: 760px;
+  border-radius: 16px;
+  border: 1px solid rgba(94, 174, 209, 0.3);
+  background: rgba(4, 12, 24, 0.72);
+  padding: 18px 20px;
+  backdrop-filter: blur(8px);
+}
+
+.intro-map-stage {
+  position: relative;
+  min-height: clamp(340px, 56vh, 520px);
+  border-radius: 18px;
+  border: 1px solid rgba(96, 176, 216, 0.34);
+  background:
+    linear-gradient(160deg, rgba(4, 13, 26, 0.96) 0%, rgba(4, 10, 22, 0.9) 52%, rgba(2, 8, 18, 0.94) 100%),
+    radial-gradient(circle at 18% 32%, rgba(84, 236, 185, 0.15) 0%, rgba(84, 236, 185, 0) 42%),
+    radial-gradient(circle at 74% 12%, rgba(75, 184, 255, 0.15) 0%, rgba(75, 184, 255, 0) 46%);
+  box-shadow: inset 0 1px 0 rgba(147, 231, 255, 0.12), 0 18px 30px rgba(0, 0, 0, 0.35);
+  overflow: hidden;
+}
+
+.intro-map-stage::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image:
+    repeating-linear-gradient(
+      0deg,
+      rgba(104, 209, 255, 0.08) 0,
+      rgba(104, 209, 255, 0.08) 1px,
+      transparent 1px,
+      transparent 44px
+    ),
+    repeating-linear-gradient(
+      90deg,
+      rgba(104, 209, 255, 0.08) 0,
+      rgba(104, 209, 255, 0.08) 1px,
+      transparent 1px,
+      transparent 44px
+    );
+  pointer-events: none;
+}
+
+.intro-map-lines {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.intro-map-lines line {
+  stroke: #69e8f8;
+  stroke-width: 0.62;
+  stroke-linecap: round;
+  filter: drop-shadow(0 0 9px rgba(103, 228, 255, 0.58));
+}
+
+.intro-node-layer {
+  position: absolute;
+  inset: 0;
+}
+
+.intro-room-node {
+  position: absolute;
+  transform: translate(-50%, -50%);
+  min-width: 130px;
+  padding: 9px 12px;
+  border-radius: 12px;
+  border: 1px solid rgba(125, 227, 255, 0.45);
+  background: linear-gradient(140deg, rgba(13, 44, 74, 0.98) 0%, rgba(10, 25, 52, 0.95) 100%);
+  color: #e8fbff;
+  font-size: 0.86rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  cursor: pointer;
+  box-shadow: 0 10px 18px rgba(0, 0, 0, 0.36), inset 0 1px 0 rgba(199, 248, 255, 0.16);
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.intro-room-node:hover {
+  border-color: rgba(120, 240, 168, 0.85);
+  box-shadow: 0 14px 22px rgba(0, 0, 0, 0.42), 0 0 20px rgba(80, 253, 203, 0.34);
+}
+
+.intro-room-node-start {
+  border-color: rgba(93, 244, 188, 0.72);
+}
+
+.intro-room-node-final {
+  border-color: rgba(255, 122, 192, 0.72);
+  background: linear-gradient(140deg, rgba(52, 17, 58, 0.96) 0%, rgba(41, 15, 56, 0.96) 100%);
+}
+
+.intro-room-node span {
+  pointer-events: none;
+}
+
+.intro-fall-impact {
+  position: absolute;
+  left: 50%;
+  top: 57%;
+  width: min(260px, 36vw);
+  aspect-ratio: 1;
+  border-radius: 999px;
+  transform: translate(-50%, -50%);
+  background: radial-gradient(circle, rgba(81, 233, 184, 0.25) 0%, rgba(81, 233, 184, 0) 68%);
+  pointer-events: none;
+}
+
+.intro-fall-ring {
+  position: absolute;
+  inset: 16%;
+  border-radius: 999px;
+  border: 1px solid rgba(126, 250, 212, 0.7);
+  box-shadow: 0 0 24px rgba(116, 249, 212, 0.46);
+}
+
+@media (max-width: 980px) {
+  .intro-scene-frame {
+    min-height: calc(100vh - 124px);
+  }
+
+  .intro-forest-caption {
+    left: 16px;
+    right: 16px;
+    max-width: none;
+  }
+
+  .intro-character-track {
+    left: 2%;
+    right: 2%;
+    bottom: 102px;
+  }
+
+  .intro-room-node {
+    min-width: 112px;
+    font-size: 0.8rem;
+  }
+}
+
+@media (max-width: 700px) {
+  .intro-scene-frame {
+    border-radius: 18px;
+    min-height: calc(100vh - 116px);
+  }
+
+  .intro-character-walker {
+    width: 78px;
+    height: 114px;
+  }
+
+  .intro-character-sprite {
+    width: 72px;
+    height: 98px;
+  }
+
+  .intro-trap-zone {
+    bottom: 92px;
+    width: min(280px, 72vw);
+  }
+
+  .intro-underground-shell {
+    padding: 16px;
+  }
+
+  .intro-map-stage {
+    min-height: 420px;
+  }
+
+  .intro-room-node {
+    min-width: 96px;
+    padding: 8px 9px;
+    font-size: 0.74rem;
+    border-radius: 10px;
+  }
+}
