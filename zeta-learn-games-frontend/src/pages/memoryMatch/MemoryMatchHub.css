@@ -1,0 +1,27 @@
+.memory-match-hub {
+  min-height: 100vh;
+  width: 100%;
+  color: white;
+
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+
+  position: relative;
+  overflow: hidden;
+}
+
+.memory-match-hub::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.35);
+  z-index: 0;
+  pointer-events: none;
+}
+
+.memory-match-hub > * {
+  position: relative;
+  z-index: 1;
+}

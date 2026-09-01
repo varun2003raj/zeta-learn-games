@@ -1,0 +1,41 @@
+.under-construction-page {
+  min-height: calc(100vh - 48px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+
+.under-construction-card {
+  width: min(900px, 100%);
+  background: linear-gradient(160deg, rgba(255, 255, 255, 0.95), rgba(248, 252, 255, 0.92));
+  border: 1px solid var(--theme-border);
+  border-radius: 20px;
+  box-shadow: var(--theme-shadow);
+  padding: 24px;
+  text-align: center;
+}
+
+.under-construction-image {
+  width: min(720px, 100%);
+  display: block;
+  margin: 0 auto 16px;
+}
+
+.under-construction-card h1 {
+  margin: 0 0 8px;
+  font-size: clamp(1.5rem, 2.8vw, 2.2rem);
+}
+
+.under-construction-card p {
+  margin: 0;
+  color: var(--theme-text-body);
+  font-size: 1rem;
+}
+
+@media (max-width: 768px) {
+  .under-construction-card {
+    padding: 16px;
+    border-radius: 16px;
+  }
+}

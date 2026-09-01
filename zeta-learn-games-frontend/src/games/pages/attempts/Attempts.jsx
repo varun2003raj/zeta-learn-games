@@ -1,0 +1,370 @@
+﻿import { useCallback, useEffect, useMemo, useState } from "react";
+import escapeService from "../../../services/escapeService";
+import Table from "../../../components/Table";
+import LoadingSpinner from "../../../components/LoadingSpinner";
+import ErrorState from "../../../components/ErrorState";
+import { formatDateTime } from "../../../utils/admin";
+
+const attemptUser = (row) =>
+  row?.user?.username ||
+  row?.user_name ||
+  row?.username ||
+  (row?.user ? `User #${row.user}` : "-");
+
+const attemptRoom = (row) =>
+  row?.escape_room?.title || row?.room?.title || row?.room_name || "-";
+
+const attemptPuzzle = (row) =>
+  row?.current_puzzle?.title || row?.current_level || "-";
+
+export default function Attempts() {
+  const [mode, setMode] = useState("progress");
+  const [rooms, setRooms] = useState([]);
+  const [puzzles, setPuzzles] = useState([]);
+  const [rows, setRows] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
+  const [roomFilter, setRoomFilter] = useState("");
+  const [userFilter, setUserFilter] = useState("");
+  const [puzzleFilter, setPuzzleFilter] = useState("");
+  const [completedFilter, setCompletedFilter] = useState("all");
+  const [page, setPage] = useState(1);
+  const [count, setCount] = useState(0);
+  const pageSize = 10;
+
+  const roomMap = useMemo(
+    () => new Map(rooms.map((room) => [String(room.id), room.title])),
+    [rooms]
+  );
+  const puzzleMap = useMemo(() => new Map(puzzles.map((puzzle) => [String(puzzle.id), puzzle])), [puzzles]);
+
+  const loadMetadata = useCallback(async () => {
+    try {
+      const [roomRows, puzzleRows] = await Promise.all([
+        escapeService.listAllRooms(),
+        escapeService.listAllPuzzles(),
+      ]);
+      setRooms(roomRows);
+      setPuzzles(puzzleRows);
+    } catch {
+      setRooms([]);
+      setPuzzles([]);
+    }
+  }, []);
+
+  const loadRows = useCallback(async () => {
+    try {
+      setLoading(true);
+      setError("");
+
+      if (mode === "progress") {
+        const response = await escapeService.listAttempts({
+          page,
+          roomId: roomFilter,
+          userId: userFilter,
+          completed: completedFilter,
+          pageSize,
+        });
+        setRows(response.results || []);
+        setCount(Number(response.count || response.results?.length || 0));
+      } else {
+        const response = await escapeService.listSubmissions({
+          page,
+          roomId: roomFilter,
+          userId: userFilter,
+          puzzleId: puzzleFilter,
+          pageSize,
+        });
+        setRows(response.results || []);
+        setCount(Number(response.count || response.results?.length || 0));
+      }
+    } catch (errorValue) {
+      setError(
+        errorValue?.response?.data?.detail ||
+          errorValue?.response?.data?.error ||
+          "Unable to load escape admin logs"
+      );
+    } finally {
+      setLoading(false);
+    }
+  }, [mode, page, roomFilter, userFilter, puzzleFilter, completedFilter]);
+
+  useEffect(() => {
+    void loadMetadata();
+  }, [loadMetadata]);
+
+  useEffect(() => {
+    void loadRows();
+  }, [loadRows]);
+
+  const totalPages = useMemo(
+    () => Math.max(1, Math.ceil(Number(count || 0) / pageSize)),
+    [count]
+  );
+
+  const progressColumns = [
+    { key: "user", title: "User", render: (row) => attemptUser(row) },
+    { key: "room", title: "Escape Room", render: (row) => attemptRoom(row) },
+    { key: "level", title: "Current Puzzle", render: (row) => attemptPuzzle(row) },
+    { key: "score", title: "Score", render: (row) => row.total_score ?? row.score ?? 0 },
+    {
+      key: "status",
+      title: "Status",
+      render: (row) => {
+        const completed = Boolean(row.completed);
+        const failed = Boolean(row.failed);
+        const label = completed ? "Completed" : failed ? "Failed" : "In Progress";
+        const tone = completed
+          ? "border-emerald-200 bg-emerald-50 text-emerald-700"
+          : failed
+          ? "border-rose-200 bg-rose-500/20 text-rose-200"
+          : "border-amber-200 bg-amber-50 text-amber-700";
+        return <span className={`rounded-full border px-2 py-1 text-xs ${tone}`}>{label}</span>;
+      },
+    },
+    {
+      key: "remaining_time_seconds",
+      title: "Remaining",
+      render: (row) => `${Number(row.remaining_time_seconds || 0)}s`,
+    },
+    {
+      key: "started_at",
+      title: "Started",
+      render: (row) => formatDateTime(row.start_time || row.started_at),
+    },
+    {
+      key: "completed_at",
+      title: "Completed At",
+      render: (row) => formatDateTime(row.end_time || row.completed_at),
+    },
+  ];
+
+  const submissionColumns = [
+    { key: "id", title: "Attempt ID" },
+    {
+      key: "user",
+      title: "User",
+      render: (row) => (row.user ? `User #${row.user}` : "-"),
+    },
+    {
+      key: "room",
+      title: "Room",
+      render: (row) => {
+        const puzzle = puzzleMap.get(String(row.puzzle_id || row.puzzle || ""));
+        const roomId = puzzle?.room || puzzle?.escape_room || "";
+        return roomMap.get(String(roomId)) || (roomId ? `Room #${roomId}` : "-");
+      },
+    },
+    {
+      key: "puzzle",
+      title: "Puzzle",
+      render: (row) => {
+        const puzzle = puzzleMap.get(String(row.puzzle_id || row.puzzle || ""));
+        return puzzle?.title || `Puzzle #${row.puzzle_id || row.puzzle || "-"}`;
+      },
+    },
+    {
+      key: "submitted_answer",
+      title: "Submitted Answer",
+      render: (row) => row.submitted_answer || "-",
+    },
+    {
+      key: "is_correct",
+      title: "Correct",
+      render: (row) => (
+        <span
+          className={`rounded-full border px-2 py-1 text-xs ${
+            row.is_correct
+              ? "border-emerald-200 bg-emerald-50 text-emerald-700"
+              : "border-rose-200 bg-rose-500/20 text-rose-200"
+          }`}
+        >
+          {row.is_correct ? "Yes" : "No"}
+        </span>
+      ),
+    },
+    {
+      key: "submitted_at",
+      title: "Submitted At",
+      render: (row) => formatDateTime(row.submitted_at),
+    },
+  ];
+
+  const columns = mode === "progress" ? progressColumns : submissionColumns;
+
+  if (loading && rows.length === 0) {
+    return <LoadingSpinner label="Loading escape admin data..." />;
+  }
+
+  return (
+    <section className="space-y-4">
+      <div>
+        <h1 className="text-2xl font-semibold text-slate-900">
+          Escape Admin Logs
+        </h1>
+        <p className="text-sm text-slate-500">
+          Uses admin progress and admin attempts APIs with filters.
+        </p>
+      </div>
+
+      <div className="flex flex-wrap gap-2">
+        <button
+          type="button"
+          onClick={() => {
+            setMode("progress");
+            setPage(1);
+          }}
+          className={`rounded-lg border px-3 py-1.5 text-sm ${
+            mode === "progress"
+              ? "border-blue-500/50 bg-blue-50 text-blue-700"
+              : "border-slate-200 text-slate-800"
+          }`}
+        >
+          Progress Sessions
+        </button>
+        <button
+          type="button"
+          onClick={() => {
+            setMode("submissions");
+            setPage(1);
+          }}
+          className={`rounded-lg border px-3 py-1.5 text-sm ${
+            mode === "submissions"
+              ? "border-blue-500/50 bg-blue-50 text-blue-700"
+              : "border-slate-200 text-slate-800"
+          }`}
+        >
+          Puzzle Submissions
+        </button>
+      </div>
+
+      <div className="grid gap-3 rounded-2xl border border-slate-200 bg-white/92 p-4 md:grid-cols-4">
+        <label className="space-y-1">
+          <span className="text-xs uppercase tracking-[0.15em] text-slate-500">
+            Escape Room
+          </span>
+          <select
+            value={roomFilter}
+            onChange={(event) => {
+              setRoomFilter(event.target.value);
+              setPage(1);
+            }}
+            className="w-full rounded-xl border border-slate-200 bg-slate-50 px-3 py-2 text-sm text-slate-900 outline-none focus:ring-2 focus:ring-blue-500/40"
+          >
+            <option value="">All Rooms</option>
+            {rooms.map((room) => (
+              <option key={room.id} value={room.id}>
+                {room.title}
+              </option>
+            ))}
+          </select>
+        </label>
+
+        <label className="space-y-1">
+          <span className="text-xs uppercase tracking-[0.15em] text-slate-500">
+            User ID
+          </span>
+          <input
+            value={userFilter}
+            onChange={(event) => {
+              setUserFilter(event.target.value);
+              setPage(1);
+            }}
+            placeholder="Filter by user id"
+            className="w-full rounded-xl border border-slate-200 bg-slate-50 px-3 py-2 text-sm text-slate-900 outline-none focus:ring-2 focus:ring-blue-500/40"
+          />
+        </label>
+
+        {mode === "progress" ? (
+          <label className="space-y-1">
+            <span className="text-xs uppercase tracking-[0.15em] text-slate-500">
+              Status
+            </span>
+            <select
+              value={completedFilter}
+              onChange={(event) => {
+                setCompletedFilter(event.target.value);
+                setPage(1);
+              }}
+              className="w-full rounded-xl border border-slate-200 bg-slate-50 px-3 py-2 text-sm text-slate-900 outline-none focus:ring-2 focus:ring-blue-500/40"
+            >
+              <option value="all">All</option>
+              <option value="completed">Completed</option>
+              <option value="incomplete">In Progress</option>
+              <option value="failed">Failed</option>
+            </select>
+          </label>
+        ) : (
+          <label className="space-y-1">
+            <span className="text-xs uppercase tracking-[0.15em] text-slate-500">
+              Puzzle
+            </span>
+            <select
+              value={puzzleFilter}
+              onChange={(event) => {
+                setPuzzleFilter(event.target.value);
+                setPage(1);
+              }}
+              className="w-full rounded-xl border border-slate-200 bg-slate-50 px-3 py-2 text-sm text-slate-900 outline-none focus:ring-2 focus:ring-blue-500/40"
+            >
+              <option value="">All Puzzles</option>
+              {puzzles.map((puzzle) => (
+                <option key={puzzle.id} value={puzzle.id}>
+                  {puzzle.title || `Puzzle #${puzzle.id}`}
+                </option>
+              ))}
+            </select>
+          </label>
+        )}
+
+        <div className="flex items-end">
+          <button
+            type="button"
+            onClick={() => {
+              setRoomFilter("");
+              setUserFilter("");
+              setPuzzleFilter("");
+              setCompletedFilter("all");
+              setPage(1);
+            }}
+            className="w-full rounded-xl border border-slate-300 px-3 py-2 text-sm font-semibold text-slate-800 hover:bg-slate-50"
+          >
+            Reset Filters
+          </button>
+        </div>
+      </div>
+
+      {error ? <ErrorState message={error} onRetry={loadRows} /> : null}
+
+      <Table
+        columns={columns}
+        data={rows}
+        loading={loading}
+        emptyMessage="No records found for current filters."
+      />
+
+      <div className="flex items-center justify-end gap-2">
+        <button
+          type="button"
+          disabled={page <= 1}
+          onClick={() => setPage((prev) => Math.max(1, prev - 1))}
+          className="rounded-lg border border-slate-200 px-3 py-1.5 text-sm text-slate-800 disabled:opacity-40"
+        >
+          Previous
+        </button>
+        <span className="text-sm text-slate-700">
+          Page {page} / {totalPages}
+        </span>
+        <button
+          type="button"
+          disabled={page >= totalPages}
+          onClick={() => setPage((prev) => Math.min(totalPages, prev + 1))}
+          className="rounded-lg border border-slate-200 px-3 py-1.5 text-sm text-slate-800 disabled:opacity-40"
+        >
+          Next
+        </button>
+      </div>
+    </section>
+  );
+}
+

@@ -1,0 +1,797 @@
+/* =========================================
+   MEMORY MATCH LEVEL PAGE
+========================================= */
+
+.memory-level-page {
+  min-height: 100vh;
+  width: 100%;
+  position: relative;
+
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+  background-repeat: no-repeat;
+
+  overflow-x: hidden;
+  color: white;
+}
+
+
+/* =========================================
+   DARK OVERLAY
+========================================= */
+
+.memory-level-overlay {
+  position: fixed;
+  inset: 0;
+
+  background:
+    radial-gradient(
+      circle at center,
+      rgba(5, 25, 40, 0.25),
+      rgba(0, 3, 12, 0.88)
+    );
+
+  z-index: 0;
+  pointer-events: none;
+}
+
+
+/* =========================================
+   MAIN CONTENT
+========================================= */
+
+.memory-level-content {
+  position: relative;
+  z-index: 2;
+
+  width: 100%;
+  max-width: 1100px;
+
+  margin: 0 auto;
+
+  padding: 65px 25px 120px;
+}
+
+
+/* =========================================
+   HEADER
+========================================= */
+
+.memory-level-header {
+  text-align: center;
+  margin-bottom: 70px;
+}
+
+.memory-level-header p {
+  margin: 0;
+
+  font-size: 13px;
+  font-weight: 800;
+
+  letter-spacing: 5px;
+
+  color: #67e8ff;
+
+  text-shadow:
+    0 0 8px rgba(0, 220, 255, 0.8),
+    0 0 25px rgba(0, 220, 255, 0.35);
+}
+
+.memory-level-header h1 {
+  margin: 12px 0 10px;
+
+  font-size: clamp(40px, 6vw, 68px);
+
+  font-weight: 900;
+
+  letter-spacing: 2px;
+
+  color: #f5faff;
+
+  text-shadow:
+    0 0 15px rgba(70, 220, 255, 0.35),
+    0 0 40px rgba(40, 150, 255, 0.2);
+}
+
+.memory-level-header span {
+  display: block;
+
+  color: #9fb4c8;
+
+  font-size: 15px;
+}
+
+
+/* =========================================
+   BACK BUTTON
+========================================= */
+
+.memory-back-button {
+  display: inline-flex;
+
+  margin-top: 25px;
+
+  padding: 11px 23px;
+
+  border: 1px solid rgba(80, 220, 255, 0.55);
+
+  border-radius: 30px;
+
+  color: #9defff;
+
+  background: rgba(0, 20, 35, 0.5);
+
+  text-decoration: none;
+
+  font-size: 12px;
+  font-weight: 800;
+
+  letter-spacing: 1px;
+
+  transition: all 0.3s ease;
+}
+
+.memory-back-button:hover {
+  color: white;
+
+  border-color: #5beaff;
+
+  background: rgba(0, 100, 135, 0.4);
+
+  box-shadow:
+    0 0 18px rgba(0, 220, 255, 0.45);
+
+  transform: translateY(-2px);
+}
+
+
+/* =========================================
+   LEVEL LIST
+========================================= */
+
+.memory-levels {
+  width: 100%;
+
+  display: flex;
+  flex-direction: column;
+
+  align-items: center;
+
+  gap: 95px;
+}
+
+
+/* =========================================
+   INDIVIDUAL FIRE LEVEL
+========================================= */
+
+.memory-fire-level {
+  position: relative;
+
+  width: 100%;
+
+  display: flex;
+  flex-direction: column;
+
+  align-items: center;
+}
+
+
+/* =========================================
+   LEVEL NAME
+========================================= */
+
+.memory-fire-level h2 {
+  position: relative;
+  z-index: 5;
+
+  margin: 0 0 5px;
+
+  font-size: clamp(32px, 5vw, 52px);
+
+  font-weight: 900;
+
+  letter-spacing: 6px;
+
+  color: white;
+
+  text-align: center;
+
+  text-shadow:
+    0 0 10px rgba(255, 255, 255, 0.45),
+    0 0 25px rgba(0, 220, 255, 0.55),
+    0 0 50px rgba(0, 180, 255, 0.3);
+}
+
+
+/* =========================================
+   FIRE BUTTON
+========================================= */
+
+.memory-fire-button {
+  position: relative;
+
+  width: min(460px, 78vw);
+  height: min(460px, 78vw);
+
+  padding: 0;
+
+  border: none;
+
+  background: transparent;
+
+  cursor: pointer;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  outline: none;
+
+  transition:
+    transform 0.35s ease,
+    filter 0.35s ease;
+}
+
+
+/* =========================================
+   FIRE GLOW
+========================================= */
+
+.memory-fire-glow {
+  position: absolute;
+
+  width: 55%;
+  height: 55%;
+
+  border-radius: 50%;
+
+  background: rgba(0, 150, 255, 0.18);
+
+  filter: blur(60px);
+
+  opacity: 0.8;
+
+  transition: all 0.4s ease;
+}
+
+
+/* =========================================
+   FIRE IMAGE
+========================================= */
+
+.memory-fire-image {
+  position: relative;
+
+  z-index: 2;
+
+  width: 100%;
+  height: 100%;
+
+  object-fit: contain;
+
+  display: block;
+
+  filter:
+    drop-shadow(0 0 10px rgba(0, 200, 255, 0.55))
+    drop-shadow(0 0 28px rgba(0, 180, 255, 0.35));
+
+  animation: memoryFireFloat 3.5s ease-in-out infinite;
+
+  transition:
+    transform 0.35s ease,
+    filter 0.35s ease;
+}
+
+
+/* =========================================
+   FIRE HOVER
+========================================= */
+
+.memory-fire-button:hover {
+  transform: scale(1.07);
+}
+
+.memory-fire-button:hover .memory-fire-image {
+  filter:
+    drop-shadow(0 0 10px rgba(255, 255, 255, 0.8))
+    drop-shadow(0 0 30px rgba(0, 220, 255, 0.85))
+    drop-shadow(0 0 65px rgba(0, 180, 255, 0.55));
+
+  animation-play-state: paused;
+}
+
+.memory-fire-button:hover .memory-fire-glow {
+  transform: scale(1.3);
+
+  opacity: 1;
+
+  filter: blur(70px);
+}
+
+
+/* =========================================
+   FIRE CLICK
+========================================= */
+
+.memory-fire-button:active {
+  transform: scale(0.94);
+}
+
+
+/* =========================================
+   FIRE FLOAT ANIMATION
+========================================= */
+
+@keyframes memoryFireFloat {
+  0% {
+    transform: translateY(0);
+  }
+
+  50% {
+    transform: translateY(-10px);
+  }
+
+  100% {
+    transform: translateY(0);
+  }
+}
+
+
+/* =========================================
+   CONNECTION LINE
+========================================= */
+
+.memory-fire-level:not(:last-child)::after {
+  content: "";
+
+  position: absolute;
+
+  bottom: -68px;
+
+  width: 2px;
+  height: 65px;
+
+  background: linear-gradient(
+    to bottom,
+    rgba(70, 225, 255, 0.8),
+    rgba(70, 225, 255, 0)
+  );
+
+  box-shadow:
+    0 0 10px rgba(0, 220, 255, 0.5);
+}
+
+
+/* =========================================
+   CONNECTION NODE
+========================================= */
+
+.memory-fire-level:not(:last-child)::before {
+  content: "";
+
+  position: absolute;
+
+  bottom: -72px;
+
+  width: 8px;
+  height: 8px;
+
+  border-radius: 50%;
+
+  background: #75edff;
+
+  box-shadow:
+    0 0 8px #75edff,
+    0 0 20px #00cfff;
+}
+
+
+/* =========================================
+   POPUP
+========================================= */
+
+.memory-level-dialog {
+  position: fixed;
+
+  top: 50%;
+  left: 50%;
+
+  transform: translate(-50%, -50%);
+
+  margin: 0;
+
+  width: min(530px, 90vw);
+
+  max-height: 90vh;
+
+  padding: 0;
+
+  border: 1px solid rgba(70, 225, 255, 0.65);
+
+  border-radius: 24px;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(7, 22, 36, 0.98),
+      rgba(2, 8, 18, 0.99)
+    );
+
+  color: white;
+
+  box-shadow:
+    0 0 25px rgba(0, 210, 255, 0.35),
+    0 0 80px rgba(0, 130, 255, 0.2),
+    inset 0 0 30px rgba(0, 210, 255, 0.05);
+
+  overflow-y: auto;
+
+  animation: memoryPopupIn 0.25s ease-out;
+}
+
+
+/* =========================================
+   POPUP BACKDROP
+========================================= */
+
+.memory-level-dialog::backdrop {
+  background: rgba(0, 0, 0, 0.8);
+
+  backdrop-filter: blur(8px);
+}
+
+
+/* =========================================
+   POPUP ANIMATION
+========================================= */
+
+@keyframes memoryPopupIn {
+  from {
+    opacity: 0;
+    transform: translate(-50%, -47%) scale(0.94);
+  }
+
+  to {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+  }
+}
+
+
+/* =========================================
+   POPUP CONTENT
+========================================= */
+
+.memory-popup-content {
+  position: relative;
+
+  padding: 32px;
+}
+
+
+/* =========================================
+   CLOSE BUTTON
+========================================= */
+
+.memory-popup-close {
+  position: absolute;
+
+  top: 15px;
+  right: 16px;
+
+  width: 38px;
+  height: 38px;
+
+  border: 1px solid rgba(140, 170, 190, 0.35);
+
+  border-radius: 50%;
+
+  background: rgba(255, 255, 255, 0.04);
+
+  color: #b8c9d8;
+
+  font-size: 25px;
+
+  line-height: 1;
+
+  cursor: pointer;
+
+  transition: all 0.25s ease;
+}
+
+.memory-popup-close:hover {
+  color: white;
+
+  border-color: #55eaff;
+
+  background: rgba(0, 200, 255, 0.12);
+
+  box-shadow:
+    0 0 15px rgba(0, 220, 255, 0.45);
+}
+
+
+/* =========================================
+   POPUP HEADER
+========================================= */
+
+.memory-popup-header {
+  text-align: center;
+
+  padding: 0 30px;
+}
+
+.memory-popup-header span {
+  font-size: 10px;
+
+  font-weight: 800;
+
+  letter-spacing: 3px;
+
+  color: #5deaff;
+
+  text-shadow:
+    0 0 10px rgba(0, 220, 255, 0.6);
+}
+
+.memory-popup-header h2 {
+  margin: 7px 0 8px;
+
+  font-size: 42px;
+
+  font-weight: 900;
+
+  letter-spacing: 4px;
+
+  color: white;
+
+  text-shadow:
+    0 0 15px rgba(0, 220, 255, 0.5);
+}
+
+.memory-popup-header p {
+  margin: 0 auto;
+
+  max-width: 390px;
+
+  color: #92a7ba;
+
+  font-size: 14px;
+
+  line-height: 1.6;
+}
+
+
+/* =========================================
+   GRID
+========================================= */
+
+.memory-popup-grid-info {
+  margin-top: 24px;
+
+  padding: 14px 18px;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: space-between;
+
+  border: 1px solid rgba(70, 200, 255, 0.25);
+
+  border-radius: 12px;
+
+  background: rgba(0, 100, 150, 0.08);
+}
+
+.memory-popup-grid-info span {
+  font-size: 11px;
+
+  font-weight: 800;
+
+  letter-spacing: 2px;
+
+  color: #7e9bad;
+}
+
+.memory-popup-grid-info strong {
+  font-size: 20px;
+
+  color: #f2f7ff;
+
+  text-shadow:
+    0 0 10px rgba(0, 220, 255, 0.4);
+}
+
+
+/* =========================================
+   RULES
+========================================= */
+
+.memory-popup-rules {
+  margin-top: 22px;
+}
+
+.memory-popup-rules h3 {
+  margin: 0 0 10px;
+
+  font-size: 12px;
+
+  letter-spacing: 2px;
+
+  color: #62eaff;
+}
+
+
+/* =========================================
+   RULE ITEM
+========================================= */
+
+.memory-rule {
+  display: flex;
+
+  align-items: center;
+
+  justify-content: space-between;
+
+  gap: 15px;
+
+  padding: 11px 12px;
+
+  border-bottom: 1px solid rgba(150, 180, 200, 0.08);
+}
+
+.memory-rule:last-child {
+  border-bottom: none;
+}
+
+.memory-rule span {
+  color: #b7c7d4;
+
+  font-size: 13px;
+}
+
+.memory-rule strong {
+  color: #f3f8ff;
+
+  font-size: 11px;
+
+  text-align: right;
+
+  letter-spacing: 0.5px;
+}
+
+
+/* =========================================
+   ENTER LEVEL
+========================================= */
+
+.memory-enter-level {
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  width: 100%;
+
+  margin-top: 24px;
+
+  padding: 14px 20px;
+
+  border: 1px solid #42e6ff;
+
+  border-radius: 12px;
+
+  background:
+    linear-gradient(
+      90deg,
+      rgba(0, 150, 200, 0.12),
+      rgba(0, 220, 255, 0.2)
+    );
+
+  color: #9df3ff;
+
+  text-decoration: none;
+
+  font-size: 13px;
+
+  font-weight: 800;
+
+  letter-spacing: 1.5px;
+
+  box-shadow:
+    0 0 15px rgba(0, 220, 255, 0.15);
+
+  transition: all 0.3s ease;
+}
+
+.memory-enter-level:hover {
+  color: white;
+
+  background:
+    linear-gradient(
+      90deg,
+      rgba(0, 180, 230, 0.25),
+      rgba(0, 230, 255, 0.35)
+    );
+
+  box-shadow:
+    0 0 22px rgba(0, 220, 255, 0.45),
+    inset 0 0 15px rgba(0, 220, 255, 0.08);
+
+  transform: translateY(-2px);
+}
+
+
+/* =========================================
+   MOBILE
+========================================= */
+
+@media (max-width: 600px) {
+
+  .memory-level-content {
+    padding: 45px 15px 80px;
+  }
+
+  .memory-level-header {
+    margin-bottom: 50px;
+  }
+
+  .memory-level-header h1 {
+    font-size: 38px;
+  }
+
+  .memory-level-header span {
+    font-size: 13px;
+  }
+
+  .memory-levels {
+    gap: 70px;
+  }
+
+  .memory-fire-level h2 {
+    font-size: 32px;
+
+    letter-spacing: 4px;
+  }
+
+  .memory-fire-button {
+    width: 340px;
+    height: 340px;
+  }
+
+  .memory-level-dialog {
+    width: 92vw;
+
+    max-height: 88vh;
+
+    border-radius: 20px;
+  }
+
+  .memory-popup-content {
+    padding: 27px 19px;
+  }
+
+  .memory-popup-header h2 {
+    font-size: 34px;
+  }
+
+  .memory-popup-header p {
+    font-size: 13px;
+  }
+
+  .memory-rule {
+    padding: 10px 3px;
+  }
+
+  .memory-rule span {
+    font-size: 11px;
+  }
+
+  .memory-rule strong {
+    font-size: 9px;
+  }
+}
