@@ -10,7 +10,9 @@ export default function MemoryMatchLeaderboard() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch("https://zeta-learn-games.onrender.com/api/memory-match/leaderboard/")
+    fetch("https://zeta-learn-games.onrender.com/api/memory-match/leaderboard/"
+      //"http://127.0.0.1:8000/api/memory-match/leaderboard/"
+    )
       .then((response) => {
         if (!response.ok) {
           throw new Error("Failed to load leaderboard");

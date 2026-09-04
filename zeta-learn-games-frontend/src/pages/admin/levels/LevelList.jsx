@@ -31,6 +31,9 @@ export default function LevelList() {
     try {
       setLoading(true);
       setError("");
+
+      console.log("LEVEL PAGE roomId:", roomId);
+
       const [roomValue, levelCollection] = await Promise.all([
         escapeService.getRoom(roomId),
         escapeService.listLevelsByRoom(roomId),

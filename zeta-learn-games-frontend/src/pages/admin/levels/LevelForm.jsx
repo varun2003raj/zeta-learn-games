@@ -72,7 +72,7 @@ export default function LevelForm() {
     }
 
     const payload = {
-      escape_room: Number(targetRoomId),
+      escape_room: String(targetRoomId),
       level_number: Number(form.level_number || 1),
       title: form.title,
       description: form.description,

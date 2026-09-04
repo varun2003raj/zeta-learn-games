@@ -23,32 +23,17 @@ class MemoryGameSettingSerializer(serializers.ModelSerializer):
 
 
 class MemoryCardSerializer(serializers.ModelSerializer):
+    id = serializers.CharField(read_only=True)
 
     class Meta:
         model = MemoryCard
-
         fields = [
             "id",
             "name",
             "category",
         ]
 
-
-class MemoryBestScoreSerializer(serializers.ModelSerializer):
-
-    username = serializers.CharField(
-        source="user.username",
-        read_only=True
-    )
-
-    class Meta:
-        model = MemoryBestScore
-
-        fields = [
-            "username",
-            "easy_best",
-            "medium_best",
-            "hard_best",
-            "expert_best",
-            "total_best",
-        ]
+    def to_representation(self, instance):
+        data = super().to_representation(instance)
+        data["id"] = str(instance.id)
+        return data

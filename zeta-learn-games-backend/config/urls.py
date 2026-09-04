@@ -1,6 +1,7 @@
 from django.contrib import admin
 from django.urls import path, include
 
+
 from treasure_hunt.views import (
     get_progress,
     complete_level,
@@ -34,10 +35,10 @@ from ctf.views import (
     use_hint,
 )
 
-from django.urls import path, include
-from django.conf import settings
-from django.conf.urls.static import static
 
+from django.conf import settings
+
+from .media_views import serve_media
 
 urlpatterns = [
     path("admin/", admin.site.urls),
@@ -51,7 +52,7 @@ urlpatterns = [
 
     # CTF Challenges
     path("api/ctf/challenges/", get_challenges),
-    path("api/ctf/challenges/<int:challenge_id>/",get_challenge_detail),
+    path("api/ctf/challenges/<str:challenge_id>/", get_challenge_detail),
 
     # CTF Teams
     path("api/teams/create/", create_team),
@@ -72,9 +73,9 @@ urlpatterns = [
 
     # CTF Categories
     path("api/ctf/challenges/admin/categories/", categories),
-    path("api/ctf/challenges/admin/categories/<int:category_id>/",update_category,),
+    path("api/ctf/challenges/admin/categories/<str:category_id>/",update_category,),
     path("api/ctf/challenges/admin/challenges/",admin_challenges,),
-    path("api/ctf/challenges/admin/challenges/<int:challenge_id>/",update_delete_challenge,),
+    path("api/ctf/challenges/admin/challenges/<str:challenge_id>/", update_delete_challenge),
 
         # CTF Lifecycle
     path("api/ctf/challenges/admin/ctf/state/", ctf_state),
@@ -85,17 +86,20 @@ urlpatterns = [
 
     path("api/ctf/submissions/submit/",submit_flag,),
 
-    path("api/ctf/challenges/admin/challenges/<int:challenge_id>/toggle-tiebreaker/",toggle_tie_breaker_visibility,),
-    path("api/ctf/challenges/<int:challenge_id>/hint/",use_hint,),
+    path("api/ctf/challenges/admin/challenges/<str:challenge_id>/toggle-tiebreaker/", toggle_tie_breaker_visibility),
+    path("api/ctf/challenges/<str:challenge_id>/hint/", use_hint),
 
     # Escape Room
     path("api/escape/", include("escape.urls")),
 
     # Memory Match
-path("api/memory-match/", include("memory_match.urls")),
+    path("api/memory-match/", include("memory_match.urls")),
+
+    # Serve media files
+    path("media/<path:path>", serve_media),
 
 ]
 
 
-if settings.DEBUG:
-    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+
+

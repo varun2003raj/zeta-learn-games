@@ -1,6 +1,7 @@
 import axios from "axios";
 
-const API_BASE = import.meta.env.VITE_API_BASE_URL || "http://127.0.0.1:8000";
+const API_BASE =
+  import.meta.env.VITE_API_BASE_URL || "https://zeta-learn-games.onrender.com";
 
 const stripTrailingSlash = (value) => value.replace(/\/+$/, "");
 
@@ -43,7 +44,7 @@ const resolveTokenForRequest = (requestUrl = "") => {
   }
 
   // Admin APIs should never pick player token first.
-  return adminAccessToken || adminLegacyToken || "";
+  return adminAccessToken || adminLegacyToken || userToken || "";
 };
 
 const swapAuthScheme = (authorizationValue = "") => {
@@ -61,7 +62,7 @@ const swapAuthScheme = (authorizationValue = "") => {
 
 const api = axios.create({
   baseURL: `${stripTrailingSlash(API_BASE)}/api`,
-  timeout: 15000,
+  timeout: 60000,
 });
 
 api.interceptors.request.use(

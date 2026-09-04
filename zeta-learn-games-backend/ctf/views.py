@@ -31,12 +31,12 @@ def admin_challenges(request):
 
         for challenge in challenges:
             data.append({
-                "id": challenge.id,
+                "id": str(challenge.id),
                 "title": challenge.title,
                 "description": challenge.description,
                 "points": challenge.points,
                 "flag": challenge.flag,
-                "category": challenge.category.id,
+                "category": str(challenge.category.id),
                 "category_name": challenge.category.name,
                 "difficulty": challenge.difficulty,
                 "hint_1": challenge.hint_1,
@@ -103,7 +103,7 @@ def admin_challenges(request):
 
     return Response(
         {
-            "id": challenge.id,
+            "id": str(challenge.id),
             "title": challenge.title,
             "message": "Challenge created successfully.",
         },
@@ -115,6 +115,8 @@ def admin_challenges(request):
 @permission_classes([IsAuthenticated])
 @parser_classes([MultiPartParser, FormParser])
 def update_delete_challenge(request, challenge_id):
+
+    print("CHALLENGE ID RECEIVED:", challenge_id)
 
     try:
         challenge = CTFChallenge.objects.get(id=challenge_id)
@@ -198,7 +200,7 @@ def update_delete_challenge(request, challenge_id):
     challenge.save()
 
     return Response({
-        "id": challenge.id,
+        "id": str(challenge.id),
         "title": challenge.title,
         "message": "Challenge updated successfully.",
     })
@@ -207,6 +209,9 @@ def update_delete_challenge(request, challenge_id):
 @api_view(["GET"])
 @permission_classes([IsAuthenticated])
 def get_challenges(request):
+
+    print("PLAYER CHALLENGES:", CTFChallenge.objects.all())
+
     challenges = CTFChallenge.objects.filter(
         is_active=True
     ).order_by("id")
@@ -215,7 +220,7 @@ def get_challenges(request):
 
     for challenge in challenges:
         data.append({
-            "id": challenge.id,
+            "id": str(challenge.id),
             "title": challenge.title,
             "description": challenge.description,
             "category_name": challenge.category.name,
@@ -261,7 +266,7 @@ def get_challenge_detail(request, challenge_id):
         visible_hints.append(challenge.hint_2)
 
     return Response({
-        "id": challenge.id,
+        "id": str(challenge.id),
         "title": challenge.title,
         "description": challenge.description,
         "category_name": challenge.category.name,
@@ -327,7 +332,7 @@ def create_team(request):
         {
             "message": "Team created successfully.",
             "team": {
-                "id": team.id,
+                "id": str(team.id),
                 "name": team.name,
                 "code": team.code,
                 "leader_name": team.leader.username,
@@ -372,7 +377,7 @@ def join_team(request):
     return Response({
         "message": "Joined team successfully.",
         "team": {
-            "id": team.id,
+            "id": str(team.id),
             "name": team.name,
             "code": team.code,
             "leader_name": team.leader.username,
@@ -400,7 +405,7 @@ def get_my_team(request):
 
     for member in members:
         member_data.append({
-            "id": member.id,
+            "id": str(member.id),
             "username": member.username,
             "joined_at": team.created_at.strftime("%Y-%m-%d"),
         })
@@ -418,7 +423,7 @@ def get_my_team(request):
         )
 
         contributions.append({
-            "user_id": member.id,
+            "user_id": str(member.id),
             "username": member.username,
             "solved_count": solved_challenges.count(),
             "total_points": total_points,
@@ -426,7 +431,7 @@ def get_my_team(request):
 
     return Response({
         "team": {
-            "id": team.id,
+            "id": str(team.id),
             "name": team.name,
             "code": team.code,
             "leader_name": team.leader.username,
@@ -511,7 +516,7 @@ def admin_teams(request):
             )
 
             contributions.append({
-                "user_id": member.id,
+                "user_id": str(member.id),
                 "username": member.username,
                 "solved_count": solved_challenges.count(),
                 "total_points": total_points,
@@ -519,7 +524,7 @@ def admin_teams(request):
 
         data.append({
             "team": {
-                "id": team.id,
+                "id": str(team.id),
                 "name": team.name,
                 "code": team.code,
                 "leader_name": team.leader.username,
@@ -637,7 +642,7 @@ def announcements(request):
 
         for announcement in announcements:
             data.append({
-                "id": announcement.id,
+                "id": str(announcement.id),
                 "title": announcement.title,
                 "message": announcement.message,
                 "created_at": announcement.created_at,
@@ -662,7 +667,7 @@ def announcements(request):
 
     return Response(
         {
-            "id": announcement.id,
+            "id": str(announcement.id),
             "title": announcement.title,
             "message": announcement.message,
             "created_at": announcement.created_at,
@@ -705,7 +710,7 @@ def update_announcement(request, announcement_id):
     announcement.save()
 
     return Response({
-        "id": announcement.id,
+        "id": str(announcement.id),
         "title": announcement.title,
         "message": announcement.message,
         "created_at": announcement.created_at,
@@ -743,7 +748,7 @@ def categories(request):
 
         for category in categories:
             data.append({
-                "id": category.id,
+                "id": str(category.id),
                 "name": category.name,
             })
 
@@ -767,7 +772,7 @@ def categories(request):
 
     return Response(
         {
-            "id": category.id,
+            "id": str(category.id),
             "name": category.name,
         },
         status=status.HTTP_201_CREATED,
@@ -821,7 +826,7 @@ def update_category(request, category_id):
     category.save()
 
     return Response({
-        "id": category.id,
+        "id": str(category.id),
         "name": category.name,
     })
 
@@ -951,13 +956,13 @@ def reset_ctf(request):
             )
 
             member_data.append({
-                "id": member.id,
+                "id": str(member.id),
                 "username": member.username,
                 "individual_score": individual_score,
             })
 
         team_data.append({
-            "id": team.id,
+            "id": str(team.id),
             "name": team.name,
             "leader": team.leader.username,
             "score": team.score,
@@ -976,7 +981,7 @@ def reset_ctf(request):
     for challenge in CTFChallenge.objects.all():
         for member in challenge.solved_by.all():
             solved_challenges.append({
-                "challenge_id": challenge.id,
+                "challenge_id": str(challenge.id),
                 "title": challenge.title,
                 "points": challenge.points,
                 "solved_by": member.username,
@@ -1043,10 +1048,10 @@ def ctf_history(request):
 
     for history in histories:
         data.append({
-            "id": history.id,
+            "id": str(history.id),
             "name": history.name,
             "snapshot": history.snapshot,
-            "created_at": history.created_at,
+            "created_at": history.created_at.isoformat(),
         })
 
     return Response(data)
@@ -1102,31 +1107,6 @@ def submit_flag(request):
     return Response({
         "message": "Correct flag!",
         "points": challenge.points,
-    })
-
-@api_view(["POST"])
-@permission_classes([IsAuthenticated])
-def toggle_tie_breaker_visibility(request, challenge_id):
-    try:
-        challenge = CTFChallenge.objects.get(id=challenge_id)
-    except CTFChallenge.DoesNotExist:
-        return Response(
-            {"error": "Challenge not found."},
-            status=status.HTTP_404_NOT_FOUND,
-        )
-
-    if challenge.category.name.strip().lower() != "tie breaker":
-        return Response(
-            {"error": "This challenge is not a Tie Breaker challenge."},
-            status=status.HTTP_400_BAD_REQUEST,
-        )
-
-    challenge.tiebreaker_visible = not challenge.tiebreaker_visible
-    challenge.save(update_fields=["tiebreaker_visible"])
-
-    return Response({
-        "message": "Tie breaker visibility updated.",
-        "tiebreaker_visible": challenge.tiebreaker_visible,
     })
 
 @api_view(["POST"])

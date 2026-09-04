@@ -12,6 +12,9 @@ from treasure_hunt.models import TreasureHuntProgress
 
 @api_view(["POST"])
 def register(request):
+
+    print("REGISTER DATA:", request.data)
+
     username = request.data.get("username")
     email = request.data.get("email")
     password = request.data.get("password")
@@ -44,7 +47,7 @@ def register(request):
         {
             "message": "Registered successfully.",
             "user": {
-                "id": user.id,
+                "id": str(user.id),
                 "username": user.username,
                 "email": user.email,
             },
@@ -88,7 +91,7 @@ def login(request):
     return Response({
         "token": token.key,
         "user": {
-            "id": user.id,
+            "id": str(user.id),
             "username": user.username,
             "email": user.email,
             "role": "admin" if user.is_staff or user.is_superuser else "user",
@@ -111,7 +114,7 @@ def profile(request):
     best_score = progress.best_score if progress else 0
 
     return Response({
-        "id": request.user.id,
+        "id": str(request.user.id),
         "username": request.user.username,
         "email": request.user.email,
         "score": current_score,

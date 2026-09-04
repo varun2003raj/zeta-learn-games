@@ -4,7 +4,7 @@ import { useParams } from "react-router-dom";
 import "./Contents.css";
 import useLockBodyScroll from "../hooks/useLockBodyScroll";
 
-const API_BASE = "https://zetamind-hub-node-backend-1.onrender.com/api/content";
+const API_BASE = "https://zeta-learn-games.onrender.com/api/content";
 const API_LIST = `${API_BASE}?limit=100`;
 
 export default function Contents() {

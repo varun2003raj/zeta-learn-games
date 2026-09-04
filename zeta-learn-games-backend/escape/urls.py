@@ -23,15 +23,15 @@ from .views import (
 
 urlpatterns = [
     path("rooms/", player_rooms, name="player-rooms"),
-    path("rooms/<int:room_id>/", player_room_detail, name="player-room-detail"),
+    path("rooms/<str:room_id>/", player_room_detail, name="player-room-detail"),
 
     # Admin Escape Rooms
     path("admin/rooms/", admin_rooms, name="admin-rooms"),
-    path("admin/rooms/<int:room_id>/",admin_room_detail,name="admin-room-detail",),
+    path("admin/rooms/<str:room_id>/",admin_room_detail,name="admin-room-detail",),
     path("admin/puzzles/", admin_puzzles, name="admin-puzzles"),
-    path("admin/puzzles/<int:puzzle_id>/",admin_puzzle_detail,name="admin-puzzle-detail",),
+    path("admin/puzzles/<str:puzzle_id>/", admin_puzzle_detail, name="admin-puzzle-detail"),
     path("admin/hints/", admin_hints, name="admin-hints"),
-    path("admin/hints/<int:hint_id>/",admin_hint_detail,name="admin-hint-detail",),
+    path("admin/hints/<str:hint_id>/", admin_hint_detail, name="admin-hint-detail"),
 
     # Admin Escape Event Control
     path("admin/state/", admin_escape_state, name="admin-escape-state"),

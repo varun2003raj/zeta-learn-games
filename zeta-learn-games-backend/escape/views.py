@@ -1,3 +1,5 @@
+from urllib import request
+
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework import status
@@ -180,11 +182,11 @@ def start_escape(request):
             active_attempt = None
         else:
             return Response({
-                "id": active_attempt.id,
-                "room": room.id,
+                "id": str(active_attempt.id),
+                "room": str(room.id),
                 "attempt_number": active_attempt.attempt_number,
                 "current_puzzle": {
-                    "id": active_attempt.current_puzzle.id,
+                    "id": str(active_attempt.current_puzzle.id),
                     "title": active_attempt.current_puzzle.title,
                     "description": active_attempt.current_puzzle.description,
                     "points": active_attempt.current_puzzle.points,
@@ -256,11 +258,11 @@ def start_escape(request):
     progress.save()
 
     return Response({
-        "id": attempt.id,
-        "room": room.id,
+        "id": str(attempt.id),
+        "room": str(room.id),
         "attempt_number": attempt.attempt_number,
         "current_puzzle": {
-            "id": first_puzzle.id,
+            "id": str(first_puzzle.id),
             "title": first_puzzle.title,
             "description": first_puzzle.description,
             "points": first_puzzle.points,
@@ -281,6 +283,10 @@ def submit_answer(request):
 
     puzzle_id = request.data.get("puzzle_id")
     answer = str(request.data.get("answer", "")).strip()
+
+    print("SUBMIT DATA:", request.data)
+    print("SUBMIT PUZZLE ID:", puzzle_id)
+    print("SUBMIT ANSWER:", answer)
 
     if not puzzle_id or not answer:
         return Response(
@@ -357,7 +363,7 @@ def submit_answer(request):
         return Response(
             {
                 "detail": "This is not the active puzzle.",
-                "expected_puzzle_id": attempt.current_puzzle_id,
+                "expected_puzzle_id": str(attempt.current_puzzle_id) if attempt.current_puzzle_id else None,
             },
             status=status.HTTP_400_BAD_REQUEST,
         )
@@ -427,7 +433,7 @@ def submit_answer(request):
                 "total_score": attempt.total_score,
                 "remaining_time_seconds": attempt.remaining_time_seconds,
                 "current_puzzle": {
-                    "id": next_puzzle.id,
+                    "id": str(next_puzzle.id),
                     "title": next_puzzle.title,
                     "description": next_puzzle.description,
                     "points": next_puzzle.points,
@@ -477,6 +483,9 @@ def submit_answer(request):
 @api_view(["POST"])
 def request_hint(request):
     puzzle_id = request.data.get("puzzle_id")
+
+    print("HINT DATA:", request.data)
+    print("HINT PUZZLE ID:", puzzle_id)
 
     if not puzzle_id:
         return Response(
@@ -558,7 +567,7 @@ def request_hint(request):
     progress.save()
 
     return Response({
-        "hint_id": hint.id,
+        "hint_id": str(hint.id),
         "hint_text": hint.text,
         "penalty_points": hint.penalty_points,
         "total_score": progress.total_score,
@@ -587,8 +596,8 @@ def player_progress(request):
                 )
 
             return Response({
-                "id": attempt.id,
-                "room": attempt.room_id,
+                "id": str(attempt.id),
+                "room": str(attempt.room_id),
                 "attempt_number": attempt.attempt_number,
                 "current_puzzle": (
                     PuzzleSerializer(
@@ -667,7 +676,7 @@ def player_progress(request):
         )
 
         room_overview.append({
-            "room_id": room.id,
+            "room_id": str(room.id),
             "room_title": room.title,
             "score": room_score,
             "total_score": room_score,
@@ -792,6 +801,7 @@ def admin_puzzles(request):
             "previous": None,
         })
 
+    print("PUZZLE REQUEST DATA:", request.data)
     serializer = PuzzleSerializer(data=request.data)
 
     if serializer.is_valid():
@@ -800,6 +810,8 @@ def admin_puzzles(request):
             PuzzleSerializer(puzzle).data,
             status=status.HTTP_201_CREATED,
         )
+
+    print("PUZZLE VALIDATION ERROR:", serializer.errors)
 
     return Response(
         serializer.errors,
@@ -941,11 +953,10 @@ def admin_escape_progress(request):
 
     for item in progress:
         data.append({
-            "id": item.id,
-            "user": item.user.username,
-            "user_id": item.user.id,
+            "id": str(item.id),
+            "user_id": str(item.user.id),
             "escape_room": {
-                "id": item.room.id,
+                "id": str(item.room.id),
                 "title": item.room.title,
             },
             "current_puzzle": (
@@ -1026,16 +1037,16 @@ def admin_escape_submissions(request):
 
     for submission in submissions:
         data.append({
-            "id": submission.id,
-            "user": submission.user.id,
+            "id": str(submission.id),
+            "user": str(submission.user.id),
             "user_name": (
                 submission.user.username
                 or submission.user.email
             ),
             "escape_room": submission.puzzle.room.title,
-            "escape_room_id": submission.puzzle.room.id,
-            "puzzle": submission.puzzle.id,
-            "puzzle_id": submission.puzzle.id,
+            "escape_room_id": str(submission.puzzle.room.id),
+            "puzzle": str(submission.puzzle.id),
+            "puzzle_id": str(submission.puzzle.id),
             "puzzle_title": submission.puzzle.title,
             "submitted_answer": submission.submitted_answer,
             "is_correct": submission.is_correct,

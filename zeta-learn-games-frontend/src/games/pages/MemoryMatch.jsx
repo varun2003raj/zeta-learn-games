@@ -104,6 +104,7 @@ function MemoryMatch() {
   useEffect(() => {
     fetch(
       "https://zeta-learn-games.onrender.com/api/memory-match/settings/"
+      //"http://127.0.0.1:8000/api/memory-match/settings/"
     )
       .then((response) => response.json())
       .then((data) => {
@@ -138,6 +139,7 @@ function MemoryMatch() {
 
     fetch(
       "https://zeta-learn-games.onrender.com/api/memory-match/cards/"
+      //"http://127.0.0.1:8000/api/memory-match/cards/"
     )
       .then((response) => response.json())
       .then((data) => {
@@ -1012,6 +1014,7 @@ function MemoryMatch() {
 
       fetch(
         "https://zeta-learn-games.onrender.com/api/memory-match/score/",
+        //"http://127.0.0.1:8000/api/memory-match/score/",
         {
           method: "POST",
 

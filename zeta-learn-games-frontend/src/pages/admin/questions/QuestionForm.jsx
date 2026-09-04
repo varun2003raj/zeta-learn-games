@@ -58,8 +58,15 @@ export default function QuestionForm() {
       return;
     }
 
+    console.log("targetLevelId:", targetLevelId);
+console.log("payload before create:", {
+  level: String(targetLevelId),
+  text: form.text,
+  penalty_points: Number(form.penalty_points || 0),
+});
+
     const payload = {
-      level: Number(targetLevelId),
+      level: String(targetLevelId),
       text: form.text,
       penalty_points: Number(form.penalty_points || 0),
     };

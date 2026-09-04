@@ -124,6 +124,7 @@ const normalizePuzzle = (puzzle = {}) => {
 };
 
 const normalizeRoom = (room = {}) => {
+  console.log("NORMALIZE ROOM:", room);
   const puzzles = Array.isArray(room?.puzzles)
     ? room.puzzles.map((puzzle) => normalizePuzzle(puzzle))
     : [];
@@ -313,7 +314,7 @@ const buildPuzzlePayload = (payload = {}, partial = false) => {
 
   const nextPayload = {};
   if (!partial || roomId !== "") {
-    nextPayload.room = toNumber(roomId, 0);
+    nextPayload.room = String(roomId);
   }
   if (!partial || payload?.title !== undefined) {
     nextPayload.title = String(payload?.title || "").trim();
@@ -351,7 +352,7 @@ const buildHintPayload = (payload = {}, partial = false) => {
 
   const nextPayload = {};
   if (!partial || puzzleId !== "") {
-    nextPayload.puzzle = toNumber(puzzleId, 0);
+    nextPayload.puzzle = String(puzzleId);
   }
   if (!partial || payload?.text !== undefined || payload?.question_text !== undefined) {
     nextPayload.text = String(text || "").trim();
@@ -511,7 +512,7 @@ const escapeService = {
 
   async startRoom(roomId, roomKey = "") {
     const payload = {
-      room_id: toNumber(roomId, 0),
+      room_id: String(roomId),
     };
     const normalizedRoomKey = String(roomKey || "").trim();
     if (normalizedRoomKey) {
@@ -524,7 +525,7 @@ const escapeService = {
 
   async submitAnswer({ puzzleId, answer }) {
     const response = await api.post(PLAYER_SUBMIT_BASE, {
-      puzzle_id: toNumber(puzzleId, 0),
+      puzzle_id: String(puzzleId),
       answer: String(answer || "").trim(),
     });
     const payload = response?.data || {};
@@ -564,10 +565,10 @@ const escapeService = {
 
   async requestHint({ puzzleId, hintId = "" }) {
     const payload = {
-      puzzle_id: toNumber(puzzleId, 0),
+      puzzle_id: String(puzzleId),
     };
     if (hintId !== "" && hintId !== null && hintId !== undefined) {
-      payload.hint_id = toNumber(hintId, 0);
+      payload.hint_id = String(hintId);
     }
 
     const response = await api.post(PLAYER_HINT_BASE, payload);

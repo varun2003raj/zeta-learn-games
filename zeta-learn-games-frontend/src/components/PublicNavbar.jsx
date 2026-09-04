@@ -55,6 +55,16 @@ export default function PublicNavbar() {
                className="public-btn public-btn-soft">
                 {user?.username || "User"}
               </button>
+
+              <button
+                type="button"
+                onClick={() => navigate("/admin/login")}
+                className="public-btn public-btn-soft"
+              >
+                Admin
+              </button>
+
+
               <button
                 type="button"
                 onClick={handleLogout}

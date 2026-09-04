@@ -13,6 +13,7 @@ export default function Challenges() {
   const themeModel = useRotatingPublicTheme();
   const apiBase = API.defaults.baseURL || "";
   const backendBase = apiBase.endsWith("/api") ? apiBase.slice(0, -4) : apiBase;
+  console.log("API BASE URL:", API.defaults.baseURL);
 
   const resolveFileUrl = (url) => {
     if (!url) return "";
